@@ -16,14 +16,15 @@ public class MovingPlatform : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+void FixedUpdate()
+{
+    transform.position = Vector3.MoveTowards(transform.position, nextPosition, moveSpeed * Time.fixedDeltaTime);
+    if(transform.position == nextPosition)
     {
-        transform.position = Vector3.MoveTowards(transform.position, nextPosition, moveSpeed * Time.deltaTime);
-        if(transform.position == nextPosition)
-        {
-            nextPosition = (nextPosition == pointA.position) ? pointB.position : pointA.position;
-        }
+        nextPosition = (nextPosition == pointA.position) ? pointB.position : pointA.position;
     }
+}
+
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
