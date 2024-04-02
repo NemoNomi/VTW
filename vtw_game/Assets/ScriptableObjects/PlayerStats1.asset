@@ -19,7 +19,7 @@ MonoBehaviour:
   airControl: 5
   canMove: 1
   canJump: 1
-  canDoubleJump: 1
+  canDoubleJump: 0
   canClimb: 1
   coyoteTime: 0.2
   jumpBufferTime: 0.2
