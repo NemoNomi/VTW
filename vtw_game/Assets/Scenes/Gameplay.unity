@@ -234,7 +234,7 @@ GameObject:
   m_Component:
   - component: {fileID: 20406732}
   m_Layer: 0
-  m_Name: WallCheck (1)
+  m_Name: WallCheckLower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -249,11 +249,42 @@ Transform:
   m_GameObject: {fileID: 20406731}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.5019998, y: -0.64, z: 0}
+  m_LocalPosition: {x: 0.5019998, y: -0.9, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1205777747}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &79642490
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 79642491}
+  m_Layer: 0
+  m_Name: WallCheckEdge
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &79642491
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 79642490}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.5019998, y: 0.62, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1689725019}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &89234219
 GameObject:
@@ -15542,6 +15573,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &471137241
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 471137242}
+  m_Layer: 0
+  m_Name: WallCheckEdge
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &471137242
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 471137241}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.54, y: 0.61, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 1205777747}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -21238,7 +21300,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1005397519}
   m_Layer: 0
-  m_Name: WallCheck (1)
+  m_Name: WallCheckLower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21253,7 +21315,7 @@ Transform:
   m_GameObject: {fileID: 1005397518}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.5019998, y: -0.679, z: 0}
+  m_LocalPosition: {x: 0.5019998, y: -0.92, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -21389,7 +21451,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1198723190
 Transform:
   m_ObjectHideFlags: 0
@@ -21449,6 +21511,7 @@ Transform:
   - {fileID: 975962442}
   - {fileID: 1714896123}
   - {fileID: 20406732}
+  - {fileID: 471137242}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1205777748
@@ -21580,7 +21643,8 @@ MonoBehaviour:
   playerStats: {fileID: 11400000, guid: 4d8ef9fd79b69d94dafe062c624b19d9, type: 2}
   rb: {fileID: 1205777750}
   groundCheck: {fileID: 975962442}
-  wallCheckUpper: {fileID: 1714896123}
+  wallCheckEdge: {fileID: 471137242}
+  wallCheck: {fileID: 1714896123}
   wallCheckLower: {fileID: 20406732}
   groundLayer:
     serializedVersion: 2
@@ -21588,6 +21652,8 @@ MonoBehaviour:
   wallLayer:
     serializedVersion: 2
     m_Bits: 512
+  otherPlayer: {fileID: 1689725014}
+  isSwinging: 0
 --- !u!114 &1205777752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21628,7 +21694,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
     m_ActionId: b953e1b2-50e8-4915-9a22-0f16bff9a013
-    m_ActionName: Player/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
+    m_ActionName: Player1/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1205777751}
@@ -23328,7 +23394,7 @@ DistanceJoint2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1689725012}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   m_EnableCollision: 0
   m_ConnectedRigidBody: {fileID: 1205777750}
@@ -23339,7 +23405,7 @@ DistanceJoint2D:
   m_Anchor: {x: 0, y: 0}
   m_ConnectedAnchor: {x: 0, y: 0}
   m_AutoConfigureDistance: 0
-  m_Distance: 3.5
+  m_Distance: 3.2
   m_MaxDistanceOnly: 1
 --- !u!114 &1689725014
 MonoBehaviour:
@@ -23356,7 +23422,8 @@ MonoBehaviour:
   playerStats: {fileID: 11400000, guid: a4a07c1a1838b5f4bb8bf4c891e511a9, type: 2}
   rb: {fileID: 1689725017}
   groundCheck: {fileID: 2115156999}
-  wallCheckUpper: {fileID: 1807563512}
+  wallCheckEdge: {fileID: 79642491}
+  wallCheck: {fileID: 1807563512}
   wallCheckLower: {fileID: 1005397519}
   groundLayer:
     serializedVersion: 2
@@ -23364,6 +23431,8 @@ MonoBehaviour:
   wallLayer:
     serializedVersion: 2
     m_Bits: 512
+  otherPlayer: {fileID: 1205777751}
+  isSwinging: 0
 --- !u!114 &1689725015
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23584,6 +23653,7 @@ Transform:
   - {fileID: 2115156999}
   - {fileID: 1807563512}
   - {fileID: 1005397519}
+  - {fileID: 79642491}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1714896122
@@ -23611,7 +23681,7 @@ Transform:
   m_GameObject: {fileID: 1714896122}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.5019998, y: 0.5089998, z: 0}
+  m_LocalPosition: {x: 0.5019998, y: 0.11, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -23844,7 +23914,7 @@ Transform:
   m_GameObject: {fileID: 1807563511}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.5019998, y: 0.5089998, z: 0}
+  m_LocalPosition: {x: 0.5019998, y: 0.26, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -23866,7 +23936,7 @@ GameObject:
   - component: {fileID: 1813966830}
   m_Layer: 9
   m_Name: TilemapClimbingWall
-  m_TagString: Untagged
+  m_TagString: isWall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -23944,36 +24014,6 @@ Tilemap:
   m_GameObject: {fileID: 1813966826}
   m_Enabled: 1
   m_Tiles:
-  - first: {x: -22, y: -5, z: 0}
-    second:
-      serializedVersion: 2
-      m_TileIndex: 29
-      m_TileSpriteIndex: 29
-      m_TileMatrixIndex: 0
-      m_TileColorIndex: 0
-      m_TileObjectToInstantiateIndex: 65535
-      dummyAlignment: 0
-      m_AllTileFlags: 1073741825
-  - first: {x: -21, y: -5, z: 0}
-    second:
-      serializedVersion: 2
-      m_TileIndex: 28
-      m_TileSpriteIndex: 28
-      m_TileMatrixIndex: 0
-      m_TileColorIndex: 0
-      m_TileObjectToInstantiateIndex: 65535
-      dummyAlignment: 0
-      m_AllTileFlags: 1073741825
-  - first: {x: -20, y: -5, z: 0}
-    second:
-      serializedVersion: 2
-      m_TileIndex: 27
-      m_TileSpriteIndex: 27
-      m_TileMatrixIndex: 0
-      m_TileColorIndex: 0
-      m_TileObjectToInstantiateIndex: 65535
-      dummyAlignment: 0
-      m_AllTileFlags: 1073741825
   - first: {x: -22, y: -4, z: 0}
     second:
       serializedVersion: 2
@@ -24360,11 +24400,11 @@ Tilemap:
     m_Data: {fileID: 11400000, guid: 2a6eab17f0c80c646b63cb8680285ac6, type: 2}
   - m_RefCount: 3
     m_Data: {fileID: 11400000, guid: 147a0ae3efb8bca479e7a91f0dd1e5b4, type: 2}
-  - m_RefCount: 3
+  - m_RefCount: 2
     m_Data: {fileID: 11400000, guid: c8a991cb222e984429543103e9dd1bdc, type: 2}
-  - m_RefCount: 3
+  - m_RefCount: 2
     m_Data: {fileID: 11400000, guid: b357ccf662180c7459b44b71f9c44849, type: 2}
-  - m_RefCount: 3
+  - m_RefCount: 2
     m_Data: {fileID: 11400000, guid: 931730df52dcdde48a9f478294fc7eaa, type: 2}
   m_TileSpriteArray:
   - m_RefCount: 0
@@ -24421,14 +24461,14 @@ Tilemap:
     m_Data: {fileID: 624363293, guid: 3e3c32cda3cb4fd4f80210d555fc64c9, type: 3}
   - m_RefCount: 3
     m_Data: {fileID: 1026420488, guid: 3e3c32cda3cb4fd4f80210d555fc64c9, type: 3}
-  - m_RefCount: 3
+  - m_RefCount: 2
     m_Data: {fileID: 280382318, guid: 3e3c32cda3cb4fd4f80210d555fc64c9, type: 3}
-  - m_RefCount: 3
+  - m_RefCount: 2
     m_Data: {fileID: -1283710531, guid: 3e3c32cda3cb4fd4f80210d555fc64c9, type: 3}
-  - m_RefCount: 3
+  - m_RefCount: 2
     m_Data: {fileID: -2116274691, guid: 3e3c32cda3cb4fd4f80210d555fc64c9, type: 3}
   m_TileMatrixArray:
-  - m_RefCount: 36
+  - m_RefCount: 33
     m_Data:
       e00: 1
       e01: 0
@@ -24447,7 +24487,7 @@ Tilemap:
       e32: 0
       e33: 1
   m_TileColorArray:
-  - m_RefCount: 36
+  - m_RefCount: 33
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
@@ -24482,7 +24522,7 @@ CompositeCollider2D:
   m_GameObject: {fileID: 1813966826}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: b4b76d0d25296214fa1b351cb299b766, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -24517,15 +24557,15 @@ CompositeCollider2D:
       - X: -220000000
         Y: 70000000
       - X: -220000000
-        Y: -50000000
+        Y: -40000000
       - X: -190000000
-        Y: -50000000
+        Y: -40000000
   m_CompositePaths:
     m_Paths:
-    - - {x: -19.000029, y: -5}
+    - - {x: -19.000029, y: -4}
       - {x: -19.000029, y: 7}
       - {x: -22, y: 6.9999704}
-      - {x: -21.999971, y: -5}
+      - {x: -21.999971, y: -4}
   m_VertexDistance: 0.0005
   m_OffsetDistance: 0.00005
   m_UseDelaunayMesh: 0

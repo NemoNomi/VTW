@@ -20,4 +20,18 @@ public class PlayerStats : ScriptableObject
     public float coyoteTime = 0.2f;
     public float jumpBufferTime = 0.2f;
     public float climbBufferTime = 0.2f;
+
+    [Header("Climbing Additional Forces")]
+    public float climbingHorizontalForce = 20f;
+    public float climbingVerticalBoost = 200f;
+    public float boostDelay = 0.01f;
+
+    [Header("Edge Climbing Delays")]
+    public float initialDelay = 0.01f;
+    public float climbPreparationDelay = 0.1f;
+    
+    [Header("Edge Climbing Forces")]
+    public float verticalClimbForce = 28f;
+    public float horizontalClimbForce = 8f;
+
 }

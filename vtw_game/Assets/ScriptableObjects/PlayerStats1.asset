@@ -24,3 +24,5 @@ MonoBehaviour:
   coyoteTime: 0.2
   jumpBufferTime: 0.2
   climbBufferTime: 0.2
+  edgeClimbForceX: 10
+  edgeClimbForceY: 10
