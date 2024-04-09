@@ -28,6 +28,7 @@ public class CursorManager : MonoBehaviour
     void Update()
     {
         HideCursorIfVisible();
+        FreezeCursor();
     }
 
     private void SetCursorVisible(bool isVisible)
@@ -40,6 +41,15 @@ public class CursorManager : MonoBehaviour
         if (Cursor.visible)
         {
             SetCursorVisible(false);
+        }
+    }
+
+    private void FreezeCursor()
+    {
+        if (!Cursor.visible)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
     }
     #endregion

@@ -7,20 +7,30 @@ public class PauseMenuManager : MonoBehaviour
     [Header("Pause Menu Canvas")]
     [SerializeField] private GameObject pauseMenuCanvasGO;
     [SerializeField] private GameObject settingsMenuCanvasGO;
+    [SerializeField] private GameObject audiosettingsMenuCanvasGO;
 
     [Header("First Selected Options")]
     [SerializeField] private GameObject pauseMenuFirstSelected;
     [SerializeField] private GameObject settingsMenuFirstSelected;
+    [SerializeField] private GameObject audiosettingsMenuFirstSelected;
+
+    [Header("Audio Clips")]
+    [SerializeField] private AudioClip openMenuSound;
+    [SerializeField] private AudioClip closeMenuSound;
     #endregion
 
     #region Private Fields
     private bool isPaused = false;
+    private PauseMenuBackgroundMusic pauseMenuBackgroundMusic;
+        private AudioSource audioSource;
     #endregion
 
     #region Unity Lifecycle
     private void Start()
     {
         InitializeMenus();
+        pauseMenuBackgroundMusic = FindObjectOfType<PauseMenuBackgroundMusic>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -38,19 +48,19 @@ public class PauseMenuManager : MonoBehaviour
 
     #region Input Handling
     private void HandlePauseInput()
-{
-    if (GamePauseInputManager.instance != null && GamePauseInputManager.instance.PauseMenuOpenCloseInput)
     {
-        if (!isPaused)
+        if (GamePauseInputManager.instance != null && GamePauseInputManager.instance.PauseMenuOpenCloseInput)
         {
-            PauseGame();
-        }
-        else
-        {
-            ResumeGame();
+            if (!isPaused)
+            {
+                PauseGame();
+            }
+            else
+            {
+                ResumeGame();
+            }
         }
     }
-}
     #endregion
 
     #region Game Pause/Resume
@@ -60,6 +70,8 @@ public class PauseMenuManager : MonoBehaviour
         Time.timeScale = 0f;
         OpenPauseMenu();
         PlayerActionMapManager.instance.SwitchActionMapsToUI();
+        pauseMenuBackgroundMusic.SetPauseMenuActive(true);
+        PlaySoundEffect(openMenuSound);
     }
 
     private void ResumeGame()
@@ -68,6 +80,8 @@ public class PauseMenuManager : MonoBehaviour
         Time.timeScale = 1f;
         CloseAllMenus();
         PlayerActionMapManager.instance.SwitchActionMapsToGameplay();
+        pauseMenuBackgroundMusic.SetPauseMenuActive(false);
+        PlaySoundEffect(closeMenuSound);
     }
     #endregion
 
@@ -76,6 +90,7 @@ public class PauseMenuManager : MonoBehaviour
     {
         pauseMenuCanvasGO.SetActive(isVisible);
         settingsMenuCanvasGO.SetActive(isVisible);
+        audiosettingsMenuCanvasGO.SetActive(isVisible);
     }
 
     private void OpenPauseMenu()
@@ -85,11 +100,19 @@ public class PauseMenuManager : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(pauseMenuFirstSelected);
     }
 
-    private void OpenSettingsMenuHandle()
+    private void OpenSettingsMenu()
     {
         SetMenuVisibility(false);
         settingsMenuCanvasGO.SetActive(true);
         EventSystem.current.SetSelectedGameObject(settingsMenuFirstSelected);
+    }
+
+    private void OpenAudioSettingsMenu()
+    {
+        SetMenuVisibility(false);
+        audiosettingsMenuCanvasGO.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(audiosettingsMenuFirstSelected);
+        pauseMenuBackgroundMusic.SetAudioSettingsActive(true);
     }
 
     private void CloseAllMenus()
@@ -99,10 +122,26 @@ public class PauseMenuManager : MonoBehaviour
     }
     #endregion
 
+        #region Sound Effects
+    private void PlaySoundEffect(AudioClip clip)
+    {
+        if (audioSource != null && clip != null)
+        {
+            audioSource.clip = clip;
+            audioSource.Play();
+        }
+    }
+    #endregion
+
     #region UI Button Handlers
     public void OnSettingsPress()
     {
-        OpenSettingsMenuHandle();
+        OpenSettingsMenu();
+    }
+
+    public void OnAudioSettingsPress()
+    {
+        OpenAudioSettingsMenu();
     }
 
     public void OnResumePress()
@@ -113,6 +152,12 @@ public class PauseMenuManager : MonoBehaviour
     public void OnSettingsBackPress()
     {
         OpenPauseMenu();
+    }
+
+    public void OnAudioSettingsBackPress()
+    {
+        OpenSettingsMenu();
+        pauseMenuBackgroundMusic.SetAudioSettingsActive(false);
     }
     #endregion
 }
