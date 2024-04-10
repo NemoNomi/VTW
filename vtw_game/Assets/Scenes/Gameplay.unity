@@ -5542,6 +5542,7 @@ MonoBehaviour:
   PauseMenuOpen: {fileID: 8300000, guid: adf9cb6d0d57e014e9ee93618306e523, type: 3}
   PauseMenuClose: {fileID: 8300000, guid: e074215cd80678b49b366772bf418663, type: 3}
   UISelect: {fileID: 8300000, guid: 7901540986ccbd84e98275dbb708002c, type: 3}
+  UISubmit: {fileID: 0}
   jump: {fileID: 8300000, guid: 8d52625bf89ef654ca9a11856468b76c, type: 3}
   wallGrab: {fileID: 8300000, guid: 1d99aed45dc5a72448791f0a40d03c91, type: 3}
   edgeClimb: {fileID: 8300000, guid: 7db0052d26f83f34fb15b8200a3b8e76, type: 3}
@@ -17130,10 +17131,10 @@ Camera:
   m_LensShift: {x: 0, y: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
+    x: 0.00052083336
+    y: 0.0027777776
+    width: 1.3791667
+    height: 0.8148148
   near clip plane: 1
   far clip plane: 1000
   field of view: 34
@@ -24202,7 +24203,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1198723190
 Transform:
   m_ObjectHideFlags: 0
@@ -26776,7 +26777,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1503091523
 Transform:
   m_ObjectHideFlags: 0
@@ -31127,7 +31128,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2093383368
 MonoBehaviour:
   m_ObjectHideFlags: 0
