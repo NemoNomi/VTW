@@ -24,5 +24,10 @@ MonoBehaviour:
   coyoteTime: 0.2
   jumpBufferTime: 0.2
   climbBufferTime: 0.2
-  edgeClimbForceX: 10
-  edgeClimbForceY: 10
+  climbingHorizontalForce: 20
+  climbingVerticalBoost: 200
+  boostDelay: 0.01
+  initialDelay: 0.01
+  climbPreparationDelay: 0.1
+  verticalClimbForce: 60
+  horizontalClimbForce: 8

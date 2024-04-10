@@ -1,4 +1,7 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class PauseMenuManager : MonoBehaviour
@@ -22,7 +25,7 @@ public class PauseMenuManager : MonoBehaviour
     #region Private Fields
     private bool isPaused = false;
     private PauseMenuBackgroundMusic pauseMenuBackgroundMusic;
-        private AudioSource audioSource;
+    private AudioSource audioSource;
     #endregion
 
     #region Unity Lifecycle
@@ -71,7 +74,7 @@ public class PauseMenuManager : MonoBehaviour
         OpenPauseMenu();
         PlayerActionMapManager.instance.SwitchActionMapsToUI();
         pauseMenuBackgroundMusic.SetPauseMenuActive(true);
-        PlaySoundEffect(openMenuSound);
+        AudioManager.instance.PlayUI(openMenuSound);
     }
 
     private void ResumeGame()
@@ -81,7 +84,7 @@ public class PauseMenuManager : MonoBehaviour
         CloseAllMenus();
         PlayerActionMapManager.instance.SwitchActionMapsToGameplay();
         pauseMenuBackgroundMusic.SetPauseMenuActive(false);
-        PlaySoundEffect(closeMenuSound);
+        AudioManager.instance.PlayUI(closeMenuSound);
     }
     #endregion
 
@@ -122,7 +125,7 @@ public class PauseMenuManager : MonoBehaviour
     }
     #endregion
 
-        #region Sound Effects
+    #region Sound Effects
     private void PlaySoundEffect(AudioClip clip)
     {
         if (audioSource != null && clip != null)

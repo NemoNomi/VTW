@@ -29,5 +29,5 @@ MonoBehaviour:
   boostDelay: 0.01
   initialDelay: 0.01
   climbPreparationDelay: 0.1
-  verticalClimbForce: 28
+  verticalClimbForce: 60
   horizontalClimbForce: 8

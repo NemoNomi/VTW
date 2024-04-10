@@ -44,6 +44,13 @@ public class PlayerMovement : MonoBehaviour
     private bool isGroundedThisFrame;
     private float lastHorizontalDirection = 0f;
 
+    [Header("Audio SFX")]
+    AudioManager audioManager;
+
+    private void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+    }
 
     void Start()
     {
@@ -201,6 +208,7 @@ public class PlayerMovement : MonoBehaviour
     void StartClimbing()
     {
         isClimbing = true;
+        audioManager.PlaySFX(audioManager.wallGrab);
         originalGravityScale = rb.gravityScale;
         rb.gravityScale = 0;
         rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
@@ -230,6 +238,7 @@ public class PlayerMovement : MonoBehaviour
         rb.AddForce(new Vector2(0, playerStats.verticalClimbForce), ForceMode2D.Impulse);
         yield return new WaitForSeconds(playerStats.climbPreparationDelay);
         rb.AddForce(new Vector2(direction * playerStats.horizontalClimbForce, 0), ForceMode2D.Impulse);
+                audioManager.PlaySFX(audioManager.edgeClimb);
 
     }
 
@@ -253,6 +262,7 @@ public class PlayerMovement : MonoBehaviour
     void PerformJump()
     {
         rb.velocity = new Vector2(rb.velocity.x, playerStats.jumpingPower);
+        audioManager.PlaySFX(audioManager.jump);
         jumpBufferCounter = 0;
         isJumping = true;
     }
@@ -260,23 +270,37 @@ public class PlayerMovement : MonoBehaviour
 
 
     #region Swing Methods
-    void StartSwing()
+private bool hasPlayedSwingSound = false;
+
+void StartSwing()
+{
+    bool otherPlayerSwinging = otherPlayer != null && otherPlayer.isSwinging;
+    if (!otherPlayerSwinging && !(isGroundedThisFrame || Time.time - lastJumpTime < swingCooldown) && Mathf.Abs(horizontal) > 0.01f)
     {
-        bool otherPlayerSwinging = otherPlayer != null && otherPlayer.isSwinging;
-        if (!otherPlayerSwinging && !(isGroundedThisFrame || Time.time - lastJumpTime < swingCooldown) && Mathf.Abs(horizontal) > 0.01f)
+        isSwinging = true;
+        
+        // Check if the swing sound has not been played yet
+        if (!hasPlayedSwingSound)
         {
-            isSwinging = true;
-            AirControlImpulse(horizontal);
+            audioManager.PlaySFX(audioManager.startSwing);
+            hasPlayedSwingSound = true; // Set the flag to true to indicate that the sound has been played
         }
-        else
-        {
-            isSwinging = false;
-            if (Time.time - lastJumpTime < swingCooldown)
-            {
-                HorizontalMovement();
-            }
-        }
+        
+        AirControlImpulse(horizontal);
     }
+    else
+    {
+        isSwinging = false;
+        if (Time.time - lastJumpTime < swingCooldown)
+        {
+            HorizontalMovement();
+        }
+        
+        // Reset the flag when the player stops swinging
+        hasPlayedSwingSound = false;
+    }
+}
+
     void AirControlImpulse(float direction)
     {
         float currentHorizontalVelocity = rb.velocity.x;
