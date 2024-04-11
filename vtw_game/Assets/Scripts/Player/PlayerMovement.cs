@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections;
 
-
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Player Stats")]
@@ -47,6 +46,9 @@ public class PlayerMovement : MonoBehaviour
     [Header("Audio SFX")]
     AudioManager audioManager;
 
+    [Header("Animator")]
+    public Animator animator;
+
     private void Awake()
     {
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
@@ -57,14 +59,12 @@ public class PlayerMovement : MonoBehaviour
         originalGravityScale = rb.gravityScale;
     }
 
-
     void Update()
     {
         UpdateGroundedStatus();
         UpdateTimers();
         HandlePlayerDirection();
     }
-
 
     private void FixedUpdate()
     {
@@ -76,10 +76,21 @@ public class PlayerMovement : MonoBehaviour
     void UpdateGroundedStatus()
     {
         isGroundedThisFrame = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+
+        if (isJumping && rb.velocity.y <= 0)
+        {
+            isJumping = false;
+        }
+        animator.SetBool("IsJumping", isJumping);
+
+
         if (isGroundedThisFrame)
         {
             coyoteTimeCounter = playerStats.coyoteTime;
-            isJumping = false;
+            if (!isJumping && rb.velocity.y <= 0)
+            {
+                isJumping = false;
+            }
         }
         else
         {
@@ -144,6 +155,11 @@ public class PlayerMovement : MonoBehaviour
         if (isGroundedThisFrame || Time.time - lastJumpTime < swingCooldown)
         {
             HorizontalMovement();
+            animator.SetFloat("Speed", Mathf.Abs(horizontal));
+        }
+        else
+        {
+            animator.SetFloat("Speed", 0f);
         }
     }
     #endregion
@@ -154,6 +170,7 @@ public class PlayerMovement : MonoBehaviour
     {
         bool nextToWall = IsNextToWall();
         bool isWallBelow = IsWallBelow();
+
 
         if (!isClimbing && climbBufferCounter > 0 && nextToWall)
         {
@@ -177,6 +194,7 @@ public class PlayerMovement : MonoBehaviour
     bool IsNextToWall()
     {
         return Physics2D.OverlapCircle(wallCheck.position, 0.1f, wallLayer);
+
 
     }
     bool IsWallBelow()
@@ -205,9 +223,11 @@ public class PlayerMovement : MonoBehaviour
         }
         return 0;
     }
+
     void StartClimbing()
     {
         isClimbing = true;
+        animator.SetBool("IsNeutral", true);
         audioManager.PlaySFX(audioManager.wallGrab);
         originalGravityScale = rb.gravityScale;
         rb.gravityScale = 0;
@@ -217,11 +237,11 @@ public class PlayerMovement : MonoBehaviour
     void StopClimbing()
     {
         isClimbing = false;
+        animator.SetBool("IsNeutral", false);
         rb.gravityScale = originalGravityScale;
         rb.constraints &= ~RigidbodyConstraints2D.FreezePositionX;
         rb.constraints = RigidbodyConstraints2D.FreezeRotation;
     }
-
     void CheckForEdge()
     {
         bool isEdgeDetected = !Physics2D.OverlapCircle(wallCheckEdge.position, 0.1f, wallLayer);
@@ -238,8 +258,7 @@ public class PlayerMovement : MonoBehaviour
         rb.AddForce(new Vector2(0, playerStats.verticalClimbForce), ForceMode2D.Impulse);
         yield return new WaitForSeconds(playerStats.climbPreparationDelay);
         rb.AddForce(new Vector2(direction * playerStats.horizontalClimbForce, 0), ForceMode2D.Impulse);
-                audioManager.PlaySFX(audioManager.edgeClimb);
-
+        audioManager.PlaySFX(audioManager.edgeClimb);
     }
 
     void ApplyHorizontalClimbingForce(float horizontalInput)
@@ -268,38 +287,26 @@ public class PlayerMovement : MonoBehaviour
     }
     #endregion
 
-
     #region Swing Methods
-private bool hasPlayedSwingSound = false;
-
-void StartSwing()
-{
-    bool otherPlayerSwinging = otherPlayer != null && otherPlayer.isSwinging;
-    if (!otherPlayerSwinging && !(isGroundedThisFrame || Time.time - lastJumpTime < swingCooldown) && Mathf.Abs(horizontal) > 0.01f)
+    void StartSwing()
     {
-        isSwinging = true;
-        
-        // Check if the swing sound has not been played yet
-        if (!hasPlayedSwingSound)
+        bool otherPlayerSwinging = otherPlayer != null && otherPlayer.isSwinging;
+        if (!otherPlayerSwinging && !(isGroundedThisFrame || Time.time - lastJumpTime < swingCooldown) && Mathf.Abs(horizontal) > 0.01f)
         {
-            audioManager.PlaySFX(audioManager.startSwing);
-            hasPlayedSwingSound = true; // Set the flag to true to indicate that the sound has been played
+            isSwinging = true;
+            animator.SetBool("IsSwinging", true);
+            AirControlImpulse(horizontal);
         }
-        
-        AirControlImpulse(horizontal);
-    }
-    else
-    {
-        isSwinging = false;
-        if (Time.time - lastJumpTime < swingCooldown)
+        else
         {
-            HorizontalMovement();
+            isSwinging = false;
+            animator.SetBool("IsSwinging", false);
+            if (Time.time - lastJumpTime < swingCooldown)
+            {
+                HorizontalMovement();
+            }
         }
-        
-        // Reset the flag when the player stops swinging
-        hasPlayedSwingSound = false;
     }
-}
 
     void AirControlImpulse(float direction)
     {
@@ -331,10 +338,12 @@ void StartSwing()
         if (isGroundedThisFrame && moveInput.y < 0 && !isAnchored)
         {
             isAnchored = true;
+            animator.SetBool("IsAnchored", true);
         }
         else if (isAnchored && (moveInput.y >= 0 || !isGroundedThisFrame))
         {
             isAnchored = false;
+            animator.SetBool("IsAnchored", false);
             rb.constraints &= ~RigidbodyConstraints2D.FreezePositionX;
             rb.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
             rb.constraints = RigidbodyConstraints2D.FreezeRotation;
@@ -344,17 +353,17 @@ void StartSwing()
             ApplyHorizontalClimbingForce(horizontal);
         }
     }
-    
+
     public void Jump(InputAction.CallbackContext context)
     {
         if (!playerStats.canJump || isAnchored || isClimbing) return;
+
         if (context.performed)
         {
             lastJumpTime = Time.time;
-            jumpBufferCounter = playerStats.jumpBufferTime;
         }
 
-        if ((isGroundedThisFrame || playerStats.canDoubleJump || coyoteTimeCounter > 0) && jumpBufferCounter > 0 && !isJumping)
+        if ((isGroundedThisFrame || playerStats.canDoubleJump || coyoteTimeCounter > 0) && context.performed && !isJumping)
         {
             PerformJump();
             coyoteTimeCounter = 0;
@@ -378,7 +387,3 @@ void StartSwing()
     }
     #endregion
 }
-
-
-
-

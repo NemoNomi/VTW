@@ -12356,7 +12356,6 @@ MonoBehaviour:
   jump: {fileID: 8300000, guid: 8d52625bf89ef654ca9a11856468b76c, type: 3}
   wallGrab: {fileID: 8300000, guid: 1d99aed45dc5a72448791f0a40d03c91, type: 3}
   edgeClimb: {fileID: 8300000, guid: 7db0052d26f83f34fb15b8200a3b8e76, type: 3}
-  startSwing: {fileID: 8300000, guid: 301fc5d6ee745dd43a023daad0c82be5, type: 3}
 --- !u!4 &940047186
 Transform:
   m_ObjectHideFlags: 0
@@ -12600,8 +12599,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278519045
-  m_fontColor: {r: 0.01886791, g: 0.017977912, b: 0.017977912, a: 1}
+    rgba: 4279516427
+  m_fontColor: {r: 0.04133534, g: 0.23899364, b: 0.0799893, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

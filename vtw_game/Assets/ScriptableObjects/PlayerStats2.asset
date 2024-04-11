@@ -15,14 +15,14 @@ MonoBehaviour:
   speed: 8
   climbingSpeedUp: 4
   climbingSpeedDown: 2
-  jumpingPower: 40
+  jumpingPower: 50
   airControl: 3
   canMove: 1
   canJump: 1
   canDoubleJump: 1
   canClimb: 0
-  coyoteTime: 0.2
-  jumpBufferTime: 0.5
+  coyoteTime: 0.1
+  jumpBufferTime: 0.1
   climbBufferTime: 0.2
   climbingHorizontalForce: 20
   climbingVerticalBoost: 200

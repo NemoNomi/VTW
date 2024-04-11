@@ -20,7 +20,6 @@ public class AudioManager : MonoBehaviour
     public AudioClip jump;
     public AudioClip wallGrab;
     public AudioClip edgeClimb;
-    public AudioClip startSwing;
 
     #region Singleton
     public static AudioManager instance;
