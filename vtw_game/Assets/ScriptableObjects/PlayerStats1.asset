@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 8
   climbingSpeedUp: 8
-  climbingSpeedDown: 2
-  jumpingPower: 50
+  climbingSpeedDown: 3
+  jumpingPower: 35
   airControl: 5
   canMove: 1
   canJump: 1

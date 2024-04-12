@@ -2,10 +2,12 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections;
 
+
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Player Stats")]
     public PlayerStats playerStats;
+
 
     [Header("Physics Components")]
     public Rigidbody2D rb;
@@ -16,13 +18,16 @@ public class PlayerMovement : MonoBehaviour
     public LayerMask groundLayer;
     public LayerMask wallLayer;
 
+
     [Header("Anchoring Settings")]
     private bool isAnchored = false;
     private float originalGravityScale;
 
+
     [Header("Climbing Settings")]
     private bool isClimbing = false;
     private float vertical;
+
 
     [Header("Swing Settings")]
     private float swingCooldown = 1f;
@@ -30,34 +35,44 @@ public class PlayerMovement : MonoBehaviour
     public PlayerMovement otherPlayer;
     public bool isSwinging = false;
 
+
     [Header("Jump Settings")]
     private bool isJumping;
+    private int jumpsLeft;
+
 
     [Header("Timing Settings")]
     private float coyoteTimeCounter;
     private float jumpBufferCounter;
     private float climbBufferCounter;
 
+
     [Header("Player State")]
     private float horizontal;
     private bool isGroundedThisFrame;
     private float lastHorizontalDirection = 0f;
 
+
     [Header("Audio SFX")]
     AudioManager audioManager;
 
+
     [Header("Animator")]
     public Animator animator;
+
 
     private void Awake()
     {
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
     }
 
+
     void Start()
     {
         originalGravityScale = rb.gravityScale;
+        jumpsLeft = 1;
     }
+
 
     void Update()
     {
@@ -66,38 +81,50 @@ public class PlayerMovement : MonoBehaviour
         HandlePlayerDirection();
     }
 
+
     private void FixedUpdate()
     {
         HandleMovement();
     }
 
 
+
     #region GroundChecks
     void UpdateGroundedStatus()
     {
+        bool wasGrounded = isGroundedThisFrame;
         isGroundedThisFrame = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
 
-        if (isJumping && rb.velocity.y <= 0)
-        {
-            isJumping = false;
-        }
         animator.SetBool("IsJumping", isJumping);
-
 
         if (isGroundedThisFrame)
         {
             coyoteTimeCounter = playerStats.coyoteTime;
-            if (!isJumping && rb.velocity.y <= 0)
+            if (rb.velocity.y <= 0)
             {
-                isJumping = false;
+                if (isJumping)
+                {
+                    isJumping = false;
+                    animator.SetBool("IsJumping", isJumping);
+                }
+                jumpsLeft = 1;
+                if (playerStats.canDoubleJump)
+                    jumpsLeft = 2; 
             }
         }
         else
         {
+            if (!isJumping && rb.velocity.y > 0) 
+            {
+                isJumping = true;
+                animator.SetBool("IsJumping", isJumping);
+            }
             coyoteTimeCounter -= Time.deltaTime;
         }
     }
+
     #endregion
+
 
 
     #region TimerUpdates
@@ -107,6 +134,7 @@ public class PlayerMovement : MonoBehaviour
         if (climbBufferCounter > 0) climbBufferCounter -= Time.deltaTime;
     }
     #endregion
+
 
 
     #region PlayerDirection
@@ -119,6 +147,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
     #endregion
+
 
 
     #region MovementHandling
@@ -141,12 +170,14 @@ public class PlayerMovement : MonoBehaviour
     #endregion
 
 
+
     #region HorizontalMovement Method
     void HorizontalMovement()
     {
         rb.velocity = new Vector2(horizontal * playerStats.speed, rb.velocity.y);
     }
     #endregion
+
 
 
     #region GroundMovement Methods
@@ -165,12 +196,12 @@ public class PlayerMovement : MonoBehaviour
     #endregion
 
 
+
     #region Climbing Methods
     private void HandleClimbing()
     {
         bool nextToWall = IsNextToWall();
         bool isWallBelow = IsWallBelow();
-
 
         if (!isClimbing && climbBufferCounter > 0 && nextToWall)
         {
@@ -191,12 +222,12 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+
     bool IsNextToWall()
     {
         return Physics2D.OverlapCircle(wallCheck.position, 0.1f, wallLayer);
-
-
     }
+
     bool IsWallBelow()
     {
         return Physics2D.OverlapCircle(wallCheckLower.position, 0.1f, wallLayer);
@@ -206,6 +237,7 @@ public class PlayerMovement : MonoBehaviour
         rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
         rb.gravityScale = 0;
     }
+
 
     private float CalculateClimbingSpeed(bool isWallBelow)
     {
@@ -224,6 +256,7 @@ public class PlayerMovement : MonoBehaviour
         return 0;
     }
 
+
     void StartClimbing()
     {
         isClimbing = true;
@@ -233,6 +266,7 @@ public class PlayerMovement : MonoBehaviour
         rb.gravityScale = 0;
         rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
     }
+
 
     void StopClimbing()
     {
@@ -261,12 +295,14 @@ public class PlayerMovement : MonoBehaviour
         audioManager.PlaySFX(audioManager.edgeClimb);
     }
 
+
     void ApplyHorizontalClimbingForce(float horizontalInput)
     {
         Vector2 horizontalForce = new Vector2(horizontalInput * playerStats.climbingHorizontalForce, 0);
         rb.AddForce(horizontalForce, ForceMode2D.Impulse);
         StartCoroutine(ApplyVerticalBoostAfterDelay());
     }
+
 
     IEnumerator ApplyVerticalBoostAfterDelay()
     {
@@ -275,6 +311,7 @@ public class PlayerMovement : MonoBehaviour
         rb.AddForce(verticalForce, ForceMode2D.Impulse);
     }
     #endregion
+
 
 
     #region Jump Methods
@@ -287,6 +324,8 @@ public class PlayerMovement : MonoBehaviour
     }
     #endregion
 
+
+
     #region Swing Methods
     void StartSwing()
     {
@@ -295,6 +334,7 @@ public class PlayerMovement : MonoBehaviour
         {
             isSwinging = true;
             animator.SetBool("IsSwinging", true);
+            animator.SetBool("IsJumping", false);
             AirControlImpulse(horizontal);
         }
         else
@@ -319,6 +359,7 @@ public class PlayerMovement : MonoBehaviour
     #endregion
 
 
+
     #region Anchor Methods
     void Anchor()
     {
@@ -328,12 +369,14 @@ public class PlayerMovement : MonoBehaviour
     #endregion
 
 
+
     #region Input Actions
     public void Move(InputAction.CallbackContext context)
     {
         Vector2 moveInput = context.ReadValue<Vector2>();
         horizontal = moveInput.x;
         vertical = moveInput.y;
+
 
         if (isGroundedThisFrame && moveInput.y < 0 && !isAnchored)
         {
@@ -354,23 +397,28 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+
     public void Jump(InputAction.CallbackContext context)
     {
-        if (!playerStats.canJump || isAnchored || isClimbing) return;
+        if (!playerStats.canJump || isAnchored || isClimbing || jumpsLeft <= 0 || isSwinging) return;
 
         if (context.performed)
         {
             lastJumpTime = Time.time;
+            PerformJump();
+            jumpsLeft--; 
+            coyoteTimeCounter = 0;
+
+            isJumping = true;
+            if (!isSwinging)
+            {
+                animator.SetBool("IsJumping", true);
+            }
         }
 
-        if ((isGroundedThisFrame || playerStats.canDoubleJump || coyoteTimeCounter > 0) && context.performed && !isJumping)
-        {
-            PerformJump();
-            coyoteTimeCounter = 0;
-        }
         if (context.canceled && rb.velocity.y > 0f)
         {
-            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
+            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f); 
         }
     }
 
@@ -387,3 +435,6 @@ public class PlayerMovement : MonoBehaviour
     }
     #endregion
 }
+
+
+

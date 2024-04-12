@@ -1,43 +1,103 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections;
+
 
 public class MovingPlatform : MonoBehaviour
 {
+    #region Platform Fields
     public Transform pointA;
     public Transform pointB;
     public float moveSpeed = 2f;
     private Vector3 nextPosition;
+    #endregion
 
-    // Start is called before the first frame update
+
+    #region Player Fields
+    public GameObject player1;
+    public GameObject player2;
+    public float maxDistance = 5.0f;
+    #endregion
+
+
+    #region Lifecycle
     void Start()
     {
         nextPosition = pointB.position;
     }
 
-    // Update is called once per frame
-void FixedUpdate()
-{
-    transform.position = Vector3.MoveTowards(transform.position, nextPosition, moveSpeed * Time.fixedDeltaTime);
-    if(transform.position == nextPosition)
+    void FixedUpdate()
     {
-        nextPosition = (nextPosition == pointA.position) ? pointB.position : pointA.position;
+        MovePlatform();
+        CheckPlayerDistance();
+    }
+    #endregion
+
+
+    #region Platform Movement
+    void MovePlatform()
+    {
+        transform.position = Vector3.MoveTowards(transform.position, nextPosition, moveSpeed * Time.fixedDeltaTime);
+        if (transform.position == nextPosition)
+        {
+            nextPosition = (nextPosition == pointA.position) ? pointB.position : pointA.position;
+        }
+    }
+    #endregion
+
+
+    #region Player Distance
+    void CheckPlayerDistance()
+    {
+        if (player1 != null && player2 != null)
+        {
+            if (Vector3.Distance(player1.transform.position, player2.transform.position) > maxDistance)
+            {
+                DetachPlayersIfNeeded(player1);
+                DetachPlayersIfNeeded(player2);
+            }
+        }
+    }
+    #endregion
+
+
+    #region Player Movement
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        AttachPlayer(collision.gameObject);
+    }
+
+    void OnCollisionExit2D(Collision2D collision)
+    {
+        DetachPlayersIfNeeded(collision.gameObject);
+    }
+
+    void AttachPlayer(GameObject player)
+    {
+        if (player == player1 || player == player2)
+        {
+            player.transform.SetParent(transform);
+        }
+    }
+
+void DetachPlayersIfNeeded(GameObject player)
+{
+    if ((player == player1 || player == player2) && player.transform.parent == transform)
+    {
+        StartCoroutine(DetachPlayerNextFrame(player));
     }
 }
+    #endregion
 
+    #region Coroutine
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    IEnumerator DetachPlayerNextFrame(GameObject player)
+{
+    yield return null;
+    if (player != null && (player == player1 || player == player2) && player.transform.parent == transform)
     {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            collision.gameObject.transform.parent = transform;
-        }
+        player.transform.SetParent(null);
     }
-        private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            collision.gameObject.transform.parent = null;
-        }
-    }
+}
+#endregion
+
 }
