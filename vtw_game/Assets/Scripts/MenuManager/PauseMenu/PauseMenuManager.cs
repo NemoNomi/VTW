@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class PauseMenuManager : MonoBehaviour
 {
@@ -86,6 +87,11 @@ public class PauseMenuManager : MonoBehaviour
         pauseMenuBackgroundMusic.SetPauseMenuActive(false);
         AudioManager.instance.PlayUI(closeMenuSound);
     }
+
+       public bool IsGamePaused()
+    {
+        return isPaused;
+    }
     #endregion
 
     #region Menu Visibility
@@ -125,21 +131,16 @@ public class PauseMenuManager : MonoBehaviour
     }
     #endregion
 
-    #region Sound Effects
-    private void PlaySoundEffect(AudioClip clip)
-    {
-        if (audioSource != null && clip != null)
-        {
-            audioSource.clip = clip;
-            audioSource.Play();
-        }
-    }
-    #endregion
 
     #region UI Button Handlers
     public void OnSettingsPress()
     {
         OpenSettingsMenu();
+    }
+    public void OnMainMenuPress()
+    {
+        SceneManager.LoadScene(0);
+        Time.timeScale = 1f;
     }
 
     public void OnAudioSettingsPress()

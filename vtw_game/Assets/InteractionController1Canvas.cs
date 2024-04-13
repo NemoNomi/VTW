@@ -1,11 +1,10 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class InteractionController : MonoBehaviour
+public class InteractionController2Canvas : MonoBehaviour
 {
     #region Assign Canvas
     public GameObject instructionBubble;
-    public GameObject instructionOverlay;
     private InputAction interactAction;
     #endregion
 
