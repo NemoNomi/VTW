@@ -38,6 +38,7 @@ public class InteractionController2CanvasAudio : MonoBehaviour
                 wasGamePaused = true;
             }
         }
+        else if (wasGamePaused && !audioSource.isPlaying && instructionOverlay.activeSelf)
         {
             audioSource.Play();
             wasGamePaused = false;
