@@ -16,7 +16,7 @@ MonoBehaviour:
   climbingSpeedUp: 8
   climbingSpeedDown: 3
   jumpingPower: 35
-  airControl: 5
+  airControl: 1
   canMove: 1
   canJump: 1
   canDoubleJump: 0
