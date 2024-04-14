@@ -16,7 +16,7 @@ MonoBehaviour:
   climbingSpeedUp: 8
   climbingSpeedDown: 3
   jumpingPower: 35
-  airControl: 1
+  airControl: 5
   canMove: 1
   canJump: 1
   canDoubleJump: 0
@@ -25,7 +25,7 @@ MonoBehaviour:
   jumpBufferTime: 0.1
   climbBufferTime: 0.2
   climbingHorizontalForce: 20
-  climbingVerticalBoost: 200
+  climbingVerticalBoost: 30
   boostDelay: 0.01
   initialDelay: 0.01
   climbPreparationDelay: 0.1

@@ -12,11 +12,13 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private GameObject MainMenuCanvasGO;
     [SerializeField] private GameObject settingsMenuCanvasGO;
     [SerializeField] private GameObject audiosettingsMenuCanvasGO;
+    [SerializeField] private GameObject controlssettingsMenuCanvasGO;
 
     [Header("First Selected Options")]
     [SerializeField] private GameObject MainMenuFirstSelected;
     [SerializeField] private GameObject settingsMenuFirstSelected;
     [SerializeField] private GameObject audiosettingsMenuFirstSelected;
+    [SerializeField] private GameObject controlssettingsMenuFirstSelected;
 
     #endregion
 
@@ -36,6 +38,7 @@ public class MainMenuManager : MonoBehaviour
         MainMenuCanvasGO.SetActive(activeCanvas == MainMenuCanvasGO);
         settingsMenuCanvasGO.SetActive(activeCanvas == settingsMenuCanvasGO);
         audiosettingsMenuCanvasGO.SetActive(activeCanvas == audiosettingsMenuCanvasGO);
+        controlssettingsMenuCanvasGO.SetActive(activeCanvas == controlssettingsMenuCanvasGO);
     }
 
     #region Menu Navigation
@@ -50,6 +53,12 @@ public class MainMenuManager : MonoBehaviour
         SetMenuVisibility(audiosettingsMenuCanvasGO);
         EventSystem.current.SetSelectedGameObject(audiosettingsMenuFirstSelected);
     }
+
+    private void OpenControlsSettingsMenu()
+    {
+        SetMenuVisibility(controlssettingsMenuCanvasGO);
+        EventSystem.current.SetSelectedGameObject(controlssettingsMenuFirstSelected);
+    }
     #endregion
 
     #region UI Button Handlers
@@ -62,6 +71,10 @@ public class MainMenuManager : MonoBehaviour
     {
         OpenAudioSettingsMenu();
     }
+    public void OnControlsSettingsPress()
+    {
+        OpenControlsSettingsMenu();
+    }
 
     public void OnSettingsBackPress()
     {
@@ -69,6 +82,10 @@ public class MainMenuManager : MonoBehaviour
     }
 
     public void OnAudioSettingsBackPress()
+    {
+        OpenSettingsMenu();
+    }
+    public void OnControlsSettingsBackPress()
     {
         OpenSettingsMenu();
     }

@@ -12,11 +12,13 @@ public class PauseMenuManager : MonoBehaviour
     [SerializeField] private GameObject pauseMenuCanvasGO;
     [SerializeField] private GameObject settingsMenuCanvasGO;
     [SerializeField] private GameObject audiosettingsMenuCanvasGO;
+    [SerializeField] private GameObject controlssettingsMenuCanvasGO;
 
     [Header("First Selected Options")]
     [SerializeField] private GameObject pauseMenuFirstSelected;
     [SerializeField] private GameObject settingsMenuFirstSelected;
     [SerializeField] private GameObject audiosettingsMenuFirstSelected;
+    [SerializeField] private GameObject controlssettingsMenuFirstSelected;
 
     [Header("Audio Clips")]
     [SerializeField] private AudioClip openMenuSound;
@@ -88,7 +90,7 @@ public class PauseMenuManager : MonoBehaviour
         AudioManager.instance.PlayUI(closeMenuSound);
     }
 
-       public bool IsGamePaused()
+    public bool IsGamePaused()
     {
         return isPaused;
     }
@@ -100,6 +102,7 @@ public class PauseMenuManager : MonoBehaviour
         pauseMenuCanvasGO.SetActive(isVisible);
         settingsMenuCanvasGO.SetActive(isVisible);
         audiosettingsMenuCanvasGO.SetActive(isVisible);
+        controlssettingsMenuCanvasGO.SetActive(isVisible);
     }
 
     private void OpenPauseMenu()
@@ -114,6 +117,12 @@ public class PauseMenuManager : MonoBehaviour
         SetMenuVisibility(false);
         settingsMenuCanvasGO.SetActive(true);
         EventSystem.current.SetSelectedGameObject(settingsMenuFirstSelected);
+    }
+    private void OpenControlsSettingsMenu()
+    {
+        SetMenuVisibility(false);
+        controlssettingsMenuCanvasGO.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(controlssettingsMenuFirstSelected);
     }
 
     private void OpenAudioSettingsMenu()
@@ -147,6 +156,10 @@ public class PauseMenuManager : MonoBehaviour
     {
         OpenAudioSettingsMenu();
     }
+    public void OnControlsSettingsPress()
+    {
+        OpenControlsSettingsMenu();
+    }
 
     public void OnResumePress()
     {
@@ -157,7 +170,10 @@ public class PauseMenuManager : MonoBehaviour
     {
         OpenPauseMenu();
     }
-
+    public void OnControlsBackPress()
+    {
+        OpenSettingsMenu();
+    }
     public void OnAudioSettingsBackPress()
     {
         OpenSettingsMenu();
